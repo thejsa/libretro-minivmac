@@ -156,6 +156,21 @@ else ifeq ($(platform), psp1)
 	HAVE_COMPAT = 1
 	EXTRA_INCLUDES := -I$(shell psp-config --pspsdk-path)/include
 
+# CTR (3DS)
+else ifeq ($(platform), ctr)
+	TARGET := $(TARGET_NAME)_libretro_ctr.a
+	CC = $(DEVKITARM)/bin/arm-none-eabi-gcc$(EXE_EXT)
+	CXX = $(DEVKITARM)/bin/arm-none-eabi-g++$(EXE_EXT)
+	AR = $(DEVKITARM)/bin/arm-none-eabi-ar$(EXE_EXT)
+	PLATFORM_DEFINES := -DARM11 -D_3DS -DNO_UNALIGNED_ACCESS
+	PLATFORM_DEFINES += -march=armv6k -mtune=mpcore -mfloat-abi=hard
+	PLATFORM_DEFINES += -Wall -mword-relocations
+	PLATFORM_DEFINES += -fomit-frame-pointer -ffast-math
+	CFLAGS += -fno-rtti -fno-exceptions
+	CXXFLAGS += -fno-rtti -fno-exceptions
+	STATIC_LINKING = 1
+
+
 # Xbox 360
 else ifeq ($(platform), xenon)
 	TARGET := $(TARGET_NAME)_libretro_xenon360.a
